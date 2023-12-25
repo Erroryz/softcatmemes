@@ -135,7 +135,7 @@ module.exports = {
                             response.data.on('end', resolve);
                         });
 
-                        const channelUpload = interaction.guild.channels.cache.get(databaseChannel);
+                        let channelUpload = await client.channels.fetch(databaseChannel)
                         const messageUpload = await channelUpload.send({
                             files: [downloadPath],
                         });
@@ -148,7 +148,7 @@ module.exports = {
 
                         if(category == 'image') submit.setImage(messageUpload.attachments.first().url)
 
-                        const channel = interaction.guild.channels.cache.get(uploadChannel);
+                        let channel = await client.channels.fetch(uploadChannel)
                         const message = await channel.send({
                             content: `${messageUpload.attachments.first().url}`,
                             components: [submitButton],
@@ -170,8 +170,5 @@ module.exports = {
                     break;
                 }
             })
-            
-        
-
     }
 }
