@@ -1,12 +1,12 @@
 
 const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require('@discordjs/builders');
+const { databaseChannel, uploadChannel} = require('../../configuration/index.js')
 const { ApplicationCommandOptionType, Colors } = require('discord.js');
 const DB = require("../../database/models/upload");
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-
-
+ 
 module.exports = {
     name: 'upload',
     description: 'Upload memes/videos/images',
@@ -135,8 +135,7 @@ module.exports = {
                             response.data.on('end', resolve);
                         });
 
-                        const channelUploadId = "1185940257770852352"
-                        const channelUpload = interaction.guild.channels.cache.get(channelUploadId);
+                        const channelUpload = interaction.guild.channels.cache.get(databaseChannel);
                         const messageUpload = await channelUpload.send({
                             files: [downloadPath],
                         });
@@ -149,8 +148,7 @@ module.exports = {
 
                         if(category == 'image') submit.setImage(messageUpload.attachments.first().url)
 
-                        const channelId = "1185951713790808144"
-                        const channel = interaction.guild.channels.cache.get(channelId);
+                        const channel = interaction.guild.channels.cache.get(uploadChannel);
                         const message = await channel.send({
                             content: `${messageUpload.attachments.first().url}`,
                             components: [submitButton],
